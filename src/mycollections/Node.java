@@ -1,21 +1,26 @@
 package mycollections;
 
 /**
- * Created by SG0892454 on 2014-09-02.
+ * Utility structure representing Node of a binary tree
+ * @param <E>
  */
-public class Node<E> {
+class Node<E> {
 
     final E value;
     Node left;
     Node right;
     Node parent;
 
-    public E getValue() {
-        return value;
-    }
-
+    /**
+     * Creates node with value provided, this node has all parent, left and right son unset (set to null).
+     * @param value
+     */
     public Node(E value) {
         this.value = value;
+    }
+
+    public E getValue() {
+        return value;
     }
 
     public boolean isLeafNode() {
