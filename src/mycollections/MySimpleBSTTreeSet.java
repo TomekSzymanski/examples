@@ -115,12 +115,38 @@ public class MySimpleBSTTreeSet<E> implements Set<E>{
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] tmpArray = new Object[size()];
+        Iterator<E> iter = iterator();
+        int i = 0;
+        for( ;iter.hasNext(); i++) {
+            tmpArray[i] = iter.next();
+        }
+        return Arrays.copyOf(tmpArray, tmpArray.length);
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        if (a.length >= size()) {
+            Iterator<E> it = iterator();
+            int i = 0;
+            for(; it.hasNext(); i++) {
+                a[i] = (T)it.next();
+            }
+            if (a.length > size()) {
+                a[size()] = null; // add null after all elements copied
+            }
+            return Arrays.copyOf(a, a.length);
+        } else {
+            T[] tmpArray = (T[])java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size());
+            Iterator<E> it = iterator();
+            int i = 0;
+            for(; it.hasNext(); i++) {
+                tmpArray[i] = (T)it.next();
+            }
+            return Arrays.copyOf(tmpArray, tmpArray.length);
+
+
+        }
     }
 
     /**
@@ -316,10 +342,10 @@ public class MySimpleBSTTreeSet<E> implements Set<E>{
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (E element : this ) {
-            result.append(element);
-            result.append(',');
-        }
+        forEach(element
+                -> {result.append(element);
+                    result.append(',');
+        });
         return result.toString();
     }
 }
