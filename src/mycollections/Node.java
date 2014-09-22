@@ -1,70 +1,51 @@
 package mycollections;
 
+import java.io.Serializable;
+
 /**
- * Utility structure representing Node of a binary tree
- * @param <E>
+ * Interface for a node of any binary tree
  */
-class Node<E> {
+public interface Node<E> extends Serializable {
 
-    final E value;
-    Node left;
-    Node right;
-    Node parent;
+    E getValue();
 
-    /**
-     * Creates node with value provided, this node has all parent, left and right son unset (set to null).
-     * @param value
-     */
-    public Node(E value) {
-        this.value = value;
-    }
+    Node<E> getOnlySon();
 
-    public E getValue() {
-        return value;
-    }
+    Node<E> getLeftSon();
 
-    public boolean isLeafNode() {
+    Node<E> getRightSon();
+
+    Node<E> getParent();
+
+    void setRightSon(Node<E> newRightSon);
+
+    void setLeftSon(Node<E> newLeftSon);
+
+    default boolean isLeafNode()  {
         return (!hasRightSon() && !hasLeftSon())? true : false;
     }
 
-    public boolean hasLeftSon() { return (left!=null)? true : false;
+    boolean hasLeftSon();
+
+    boolean isLeftSon();
+
+    boolean hasNoParent();
+
+    boolean isRightSon();
+
+    boolean hasRightSon();
+
+    public void unlinkFromParent();
+
+    public void unlinkFromParentAndSons();
+
+    default boolean hasOneSonOnly() {
+        return ((hasLeftSon() && !hasRightSon()) || (!hasLeftSon() && hasRightSon()))? true : false;
     }
 
-    public boolean isLeftSon() {
-        if (!hasParent()) return false;
-        return (parent.left == this )? true : false;
-    }
-
-    public boolean hasParent() {
-        return (parent != null )? true : false;
-    }
-
-    public boolean isRightSon() {
-        if (!hasParent()) return false;
-        return (parent.right == this )? true : false;
-    }
-
-
-    public boolean hasRightSon() { return (right!=null)? true : false;
-    }
-
-    public boolean hasOneSonOnly() {
-        return ((left==null && right != null) || (left!=null && right == null))? true : false;
-    }
-
-    public boolean hasBothSons() {
+    default boolean hasBothSons() {
         return (hasRightSon() && hasLeftSon())? true : false;
     }
 
-    public Node<E> getOnlySon() {
-        if (hasOneSonOnly()) {
-            if (hasRightSon()) {
-                return right;
-            } else if (hasLeftSon()) {
-                return left;
-            }
-        }
-        throw new IllegalStateException("Cannot call getOnlySon on node which has both sons");
-    }
-
+    boolean isRootNode();
 }
